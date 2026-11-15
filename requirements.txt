@@ -10,3 +10,5 @@ pytest
 loguru
 pydantic
 prometheus-client
+kafka-python
+redis
