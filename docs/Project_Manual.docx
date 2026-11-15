@@ -1,0 +1,251 @@
+Open Banking & Multi-Currency Exchange Rate Sync Engine
+1. Purpose
+
+The system collects, validates, stores, and serves real-time foreign exchange rates for a simulated cross-border payment platform.
+
+The objective is to build a production-like data platform demonstrating:
+
+Data ingestion
+Stream processing
+Data quality validation
+Caching
+Monitoring
+API development
+2. Installed Components
+Local Installations
+Python
+
+Purpose:
+
+Core application development
+
+Verification:
+
+PowerShell
+python --version
+PostgreSQL 16
+
+Purpose:
+
+Store validated exchange rates
+Historical data storage
+
+Verification:
+
+PowerShell
+psql --version
+DBeaver
+
+Purpose:
+
+Database management
+Query execution
+VS Code
+
+Purpose:
+
+Development environment
+3. Docker Services
+Redis
+
+Port:
+
+Plain Text
+6379
+
+Purpose:
+
+Plain Text
+Cache exchange rates
+
+Verification:
+
+Shell
+redis-cli
+PING
+
+Expected:
+
+Plain Text
+PONG
+ 
+Kafka
+
+Port:
+
+Plain Text
+9092
+
+Purpose:
+
+Plain Text
+Event streaming
+
+Responsibilities:
+
+Publish FX rates
+Decouple producers and consumers
+Prometheus
+
+Port:
+
+Plain Text
+9090
+
+Purpose:
+
+Plain Text
+Metrics collection
+
+Metrics Examples:
+
+API Latency
+Consumer Throughput
+Processing Time
+Grafana
+
+Port:
+
+Plain Text
+3000
+
+Purpose:
+
+Plain Text
+Dashboard visualisation
+
+Default Login:
+
+Plain Text
+admin
+admin
+4. Database Design
+fx_rates
+SQL
+CREATE TABLE fx_rates (
+id SERIAL PRIMARY KEY,
+provider VARCHAR(50),
+base_currency VARCHAR(10),
+target_currency VARCHAR(10),
+exchange_rate NUMERIC(18,8),
+fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Purpose:
+
+Store validated exchange rates.
+
+pipeline_audit
+SQL
+CREATE TABLE pipeline_audit (
+id SERIAL PRIMARY KEY,
+process_name VARCHAR(100),
+status VARCHAR(50),
+execution_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Purpose:
+
+Track pipeline execution and failures.
+
+5. Application Flow
+Step 1
+
+Retrieve exchange rates from:
+
+Plain Text
+Frankfurter API
+Step 2
+
+Publish exchange rate records to Kafka.
+
+Step 3
+
+Kafka Consumer receives messages.
+
+Step 4
+
+Great Expectations validates data.
+
+Step 5
+
+Valid records inserted into PostgreSQL.
+
+Step 6
+
+Redis caches frequently requested rates.
+
+Step 7
+
+FastAPI serves exchange rates.
+
+Step 8
+
+Prometheus collects metrics.
+
+Step 9
+
+Grafana visualizes metrics.
+
+6. Commands Reference
+Start Containers
+PowerShell
+docker compose up -d
+Stop Containers
+PowerShell
+docker compose down
+View Containers
+PowerShell
+docker ps
+PostgreSQL
+PowerShell
+psql -U postgres
+Redis
+PowerShell
+docker exec -it fx-redis redis-cli
+Kafka Logs
+PowerShell
+docker logs fx-kafka
+7. Next Day Development Plan
+Phase 1
+
+Create:
+
+Plain Text
+frankfurter_client.py
+Phase 2
+
+Implement:
+
+Plain Text
+Kafka Producer
+Phase 3
+
+Implement:
+
+Plain Text
+Kafka Consumer
+Phase 4
+
+Integrate:
+
+Plain Text
+PostgreSQL
+Phase 5
+
+Implement:
+
+Plain Text
+FastAPI
+Phase 6
+
+Add:
+
+Plain Text
+Prometheus Metrics
+Phase 7
+
+Build:
+
+Plain Text
+Grafana Dashboard
