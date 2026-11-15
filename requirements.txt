@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pandas
+requests
+sqlalchemy
+psycopg2-binary
+apache-airflow
+great-expectations
+pytest
+loguru
+pydantic
+prometheus-client
