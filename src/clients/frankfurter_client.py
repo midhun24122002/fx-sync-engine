@@ -7,7 +7,10 @@ class FrankfurterClient:
 
     def get_latest_rates(self):
 
-        response = requests.get(self.URL)
+        response = requests.get(
+            self.URL,
+            timeout=30
+        )
 
         response.raise_for_status()
 

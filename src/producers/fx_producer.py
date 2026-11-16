@@ -4,31 +4,39 @@ from kafka import KafkaProducer
 
 from src.clients.frankfurter_client import FrankfurterClient
 
+
 producer = KafkaProducer(
     bootstrap_servers="localhost:9092",
     value_serializer=lambda v: json.dumps(v).encode("utf-8")
 )
 
-client = FrankfurterClient()
 
-data = client.get_latest_rates()
+def publish_fx_rates():
 
-base_currency = data["base"]
+    client = FrankfurterClient()
 
-for target_currency, rate in data["rates"].items():
+    data = client.get_latest_rates()
 
-    message = {
-        "provider": "Frankfurter",
-        "base_currency": base_currency,
-        "target_currency": target_currency,
-        "exchange_rate": rate
-    }
+    base_currency = data["base"]
 
-    producer.send(
-        "fx-rates",
-        message
-    )
+    for target_currency, rate in data["rates"].items():
 
-producer.flush()
+        message = {
+            "provider": "Frankfurter",
+            "base_currency": base_currency,
+            "target_currency": target_currency,
+            "exchange_rate": rate
+        }
 
-print("FX Rates Published")
+        producer.send(
+            "fx-rates",
+            message
+        )
+
+    producer.flush()
+
+    print("FX Rates Published")
+
+
+if __name__ == "__main__":
+    publish_fx_rates()
