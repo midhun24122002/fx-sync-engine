@@ -9,14 +9,18 @@ from src.validators.fx_validator import validate_rate
 
 consumer = KafkaConsumer(
     "fx-rates",
-    bootstrap_servers="localhost:9092",
-    auto_offset_reset="latest",
+    bootstrap_servers="localhost:29092",
+    auto_offset_reset="earliest",
+    group_id="fx-consumer-group",
     value_deserializer=lambda x: json.loads(x.decode("utf-8"))
 )
 
 print("Consumer started...")
 
 for message in consumer:
+
+    print("Message received from Kafka")
+    print(message)
 
     data = message.value
 
