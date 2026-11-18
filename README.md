@@ -1,6 +1,8 @@
 # fx-sync-engine
 # Open Banking & Multi-Currency Exchange Rate Sync Engine
 
+> For the full project journey, beginner-friendly architecture walkthrough, implementation status, and onboarding guide, see [Project Documentation](docs/PROJECT_DOCUMENTATION.md).
+
 ## Project Overview
 
 Cross-border payment platforms rely on accurate foreign exchange (FX) rates to process international transactions. Incorrect exchange rates can lead to financial loss, regulatory issues, and poor customer experience.
